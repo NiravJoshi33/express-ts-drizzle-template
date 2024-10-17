@@ -3,7 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
-import { COOKIE_SECRET, NODE_ENV } from "./utils/env-vars";
+import { COOKIE_SECRET } from "./utils/env-vars";
 import { corsOptions } from "./utils/config";
 
 const app = express();
