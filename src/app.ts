@@ -19,3 +19,5 @@ const limiter = rateLimit({
 app.use(limiter);
 
 app.disable("x-powered-by"); // Reduce fingerprinting
+
+export default app;
