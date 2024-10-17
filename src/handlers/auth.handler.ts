@@ -26,8 +26,7 @@ export const loginHandler = async (req: Request, res: Response) => {
   }
 
   // Get session token from request
-  const requestHeaders = req.headers["authorization"];
-  const sessionToken = requestHeaders?.split(" ")[1];
+  const sessionToken = req.signedCookies.session_token;
 
   if (!sessionToken) {
     const user = await verifyUserCredentials(email, password);
@@ -48,6 +47,7 @@ export const loginHandler = async (req: Request, res: Response) => {
       secure: NODE_ENV === "production",
       sameSite: "strict",
       maxAge: SESSION_EXPIRATION_TIME_IN_MS,
+      signed: true,
     });
 
     const response: ApiResponse<Session> = {

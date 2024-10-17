@@ -3,7 +3,7 @@ import {
   encodeBase32LowerCaseNoPadding,
   encodeHexLowerCase,
 } from "@oslojs/encoding";
-import { sha256, SHA256 } from "@oslojs/crypto/sha2";
+import { sha256 } from "@oslojs/crypto/sha2";
 import { SESSION_EXPIRATION_TIME_IN_MS } from "./env-vars";
 import { db } from "../db";
 import { eq } from "drizzle-orm";

@@ -14,7 +14,12 @@ export const DATABASE_URL =
   NODE_ENV === "production"
     ? (process.env.PROD_DB_URL as string)
     : (process.env.DEV_DB_URL as string);
+export const COOKIE_SECRET = process.env.COOKIE_SECRET as string;
 
 if (!DATABASE_URL) {
   throw new Error("DATABASE_URL is not set");
+}
+
+if (!COOKIE_SECRET) {
+  throw new Error("COOKIE_SECRET is not set");
 }

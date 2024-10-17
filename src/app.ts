@@ -2,12 +2,15 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
+import cookieParser from "cookie-parser";
+import { COOKIE_SECRET } from "./utils/env-vars";
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(helmet());
+app.use(cookieParser(COOKIE_SECRET));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
