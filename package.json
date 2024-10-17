@@ -1,0 +1,12 @@
+{
+  "name": "express-ts-drizzle-template",
+  "version": "1.0.0",
+  "description": "Basic Template for Backend App with Express, Typescript, & Drizzle ORM",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
