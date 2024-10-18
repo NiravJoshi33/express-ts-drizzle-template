@@ -4,6 +4,7 @@ import { ApiResponse } from "../models/api-response.model";
 import {
   createSession,
   generateSessionToken,
+  invalidateSession,
   validateSession,
   verifyUserCredentials,
 } from "../utils/auth-utils";
@@ -86,6 +87,37 @@ export const loginHandler = async (
       success: true,
       message: "User logged in successfully",
       data: user,
+    };
+
+    res.status(200).json(response);
+    return;
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const logoutHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const sessionToken = req.signedCookies.session_token;
+    if (!sessionToken) {
+      const response: ApiResponse<null> = {
+        success: false,
+        message: "No session token found",
+      };
+
+      res.status(400).json(response);
+      return;
+    }
+
+    await invalidateSession(sessionToken);
+
+    const response: ApiResponse<null> = {
+      success: true,
+      message: "User logged out successfully",
     };
 
     res.status(200).json(response);
