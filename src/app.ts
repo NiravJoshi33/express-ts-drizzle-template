@@ -4,7 +4,8 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
 import { COOKIE_SECRET } from "./utils/env-vars";
-import { corsOptions } from "./utils/config";
+import { corsOptions, PREFIX } from "./utils/config";
+import router from "./routes";
 
 const app = express();
 
@@ -27,5 +28,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 app.disable("x-powered-by"); // Reduce fingerprinting
+
+app.use(PREFIX, router);
 
 export default app;

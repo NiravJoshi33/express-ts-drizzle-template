@@ -9,3 +9,5 @@ export const corsOptions: CorsOptions = {
   credentials: true,
   optionsSuccessStatus: 200,
 };
+
+export const PREFIX = "/api/v1";
