@@ -7,6 +7,7 @@ import { sha256 } from "@oslojs/crypto/sha2";
 import { SESSION_EXPIRATION_TIME_IN_MS } from "./env-vars";
 import { db } from "../db";
 import { eq } from "drizzle-orm";
+import { v4 as uuid4 } from "uuid";
 
 export type SessionValidationResult =
   | { session: Session; user: User }
@@ -108,4 +109,27 @@ export const verifyUserCredentials = async (
   const user = existingUser[0];
   const passwordMatch = password === user.password;
   return passwordMatch ? user : null;
+};
+
+export const createUser = async (
+  email: string,
+  password: string,
+  username: string
+) => {
+  const newUser: User = {
+    id: uuid4(),
+    email,
+    password,
+    username,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  try {
+    await db.insert(dbSchema.users).values(newUser);
+    return newUser;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };

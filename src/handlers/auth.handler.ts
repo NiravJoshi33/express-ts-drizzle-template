@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { loginSchema } from "../models/auth.models";
+import { loginSchema, registerSchema } from "../models/auth.models";
 import { ApiResponse } from "../models/api-response.model";
 import {
   createSession,
+  createUser,
   generateSessionToken,
   invalidateSession,
   validateSession,
@@ -118,6 +119,59 @@ export const logoutHandler = async (
     const response: ApiResponse<null> = {
       success: true,
       message: "User logged out successfully",
+    };
+
+    res.status(200).json(response);
+    return;
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const registerHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { email, password, confirmPassword, name } = req.body;
+
+    const result = registerSchema.safeParse({
+      email,
+      password,
+      confirmPassword,
+      name,
+    });
+
+    if (!result.success) {
+      const response: ApiResponse<null> = {
+        success: false,
+        message: "Invalid input",
+        errors: result.error.errors.map((error) => error.message),
+      };
+
+      res.status(400).json(response);
+      return;
+    }
+
+    const user = await createUser(email, password, name);
+
+    // Generate session token
+    const sessionToken = generateSessionToken();
+    const session = await createSession(sessionToken, user.id);
+
+    res.cookie("session_token", sessionToken, {
+      httpOnly: true,
+      secure: NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: SESSION_EXPIRATION_TIME_IN_MS,
+      signed: true,
+    });
+
+    const response: ApiResponse<Session> = {
+      success: true,
+      message: "User registered successfully",
+      data: session,
     };
 
     res.status(200).json(response);

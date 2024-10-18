@@ -3,15 +3,16 @@ import { migrate } from "drizzle-orm/better-sqlite3/migrator";
 import Database from "better-sqlite3";
 import path from "path";
 import fs from "fs";
+import { DATABASE_URL } from "./src/utils/env-vars";
 
 // Ensure the database directory exists
-const dbDir = path.join(__dirname, "db");
+const dbDir = path.join(__dirname, DATABASE_URL);
 if (!fs.existsSync(dbDir)) {
   fs.mkdirSync(dbDir, { recursive: true });
 }
 
 // Use an absolute path for the database file
-const sqlite = new Database(path.join(dbDir, "sqlite.db"));
+const sqlite = new Database(DATABASE_URL);
 const db = drizzle(sqlite);
 
 async function main() {
