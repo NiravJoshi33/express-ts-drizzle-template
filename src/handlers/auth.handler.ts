@@ -48,7 +48,7 @@ export const loginHandler = async (
         return;
       }
 
-      const sessionToken = await generateSessionToken();
+      const sessionToken = generateSessionToken();
       const session = await createSession(sessionToken, user.id);
 
       res.cookie("session_token", sessionToken, {
@@ -114,7 +114,19 @@ export const logoutHandler = async (
       return;
     }
 
-    await invalidateSession(sessionToken);
+    try {
+      await invalidateSession(sessionToken);
+    } catch (error) {
+      const response: ApiResponse<null> = {
+        success: false,
+        message: "Internal server error",
+      };
+
+      res.status(500).json(response);
+      return;
+    }
+
+    res.clearCookie("session_token");
 
     const response: ApiResponse<null> = {
       success: true,
