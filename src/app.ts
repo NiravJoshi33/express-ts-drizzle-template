@@ -7,6 +7,7 @@ import { COOKIE_SECRET } from "./utils/env-vars";
 import { corsOptions, PREFIX } from "./utils/config";
 import router from "./routes";
 import { errorHandlerMiddleware } from "./middleware/error-handler.middleware";
+import { unknownRouteMiddleware } from "./middleware/unknown-route.middleware";
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.disable("x-powered-by"); // Reduce fingerprinting
 
 app.use(PREFIX, router);
 
+app.use(unknownRouteMiddleware);
 app.use(errorHandlerMiddleware);
 
 export default app;
