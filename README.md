@@ -27,7 +27,7 @@ This is a comprehensive template for building robust backend applications using 
 1. Clone the repository:
 
    ```
-   git clone https://github.com/your-username/express-ts-drizzle-template.git
+   git clone https://github.com/NiravJoshi33/express-ts-drizzle-template.git
    cd express-ts-drizzle-template
    ```
 
