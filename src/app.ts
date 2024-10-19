@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import { COOKIE_SECRET } from "./utils/env-vars";
 import { corsOptions, PREFIX } from "./utils/config";
 import router from "./routes";
+import { errorHandlerMiddleware } from "./middleware/error-handler.middleware";
 
 const app = express();
 
@@ -30,5 +31,7 @@ app.use(limiter);
 app.disable("x-powered-by"); // Reduce fingerprinting
 
 app.use(PREFIX, router);
+
+app.use(errorHandlerMiddleware);
 
 export default app;
